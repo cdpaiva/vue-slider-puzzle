@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Puzzles @puzzle-changed="updateName" />
-    <SliderPuzzle :puzzleName="selectedPuzzleName"/>
+    <Puzzles @puzzle-changed="updatePuzzle" />
+    <SliderPuzzle :puzzle="selectedPuzzle"/>
     <Records/>
   </div>
 </template>
@@ -20,12 +20,12 @@ export default {
   },
   data() {
     return {
-      selectedPuzzleName: 'city',
+      selectedPuzzle: 'stork'
     };
   },
   methods: {
-    updateName(name){
-      this.selectedPuzzleName = name
+    updatePuzzle(puzzle){
+      this.selectedPuzzle = puzzle
     }
   }
 };

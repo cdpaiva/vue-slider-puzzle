@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <h1>Swap the Images to Win</h1>
+  <div class="container">
+    <h1>Swap the Panes to Rebuild the Image</h1>
     <button @click="start" id="start-button">Start Game</button>
     <button @click="stop" id="quit-button">Quit</button>
     <p>Elapsed Time: {{ elapsedTime }}</p>
     <p v-if="isWinning">You win</p>
-    <div class="row">
-      <div
-        class="column"
-        v-for="(s, index) of shuffledPuzzleArray"
-        :key="s"
-        @click="swap(index)"
-      >
-        <img :src="require(`../assets/${puzzleName}/${s}`)" />
+    <div class="board">
+      <div class="row">
+        <div
+          class="column"
+          v-for="(s, index) of shuffledPuzzleArray"
+          :key="s"
+          @click="swap(index)"
+        >
+          <img :src="require(`../assets/${puzzle}/${s}`)" />
+        </div>
       </div>
     </div>
   </div>
@@ -36,9 +38,9 @@ const correctPuzzleArray = [
 export default {
   name: "SliderPuzzle",
   props: {
-    puzzleName: {
+    puzzle: {
       type: String,
-      default: 'mandala',
+      default: "stork",
     },
   },
   data() {
@@ -125,17 +127,25 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.board {
+  border: 1px solid black;
+  max-width: 726px;
+  max-height: 726px;
+}
 .row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 725px;
   flex-wrap: wrap;
 }
 .column {
-  width: 33%;
+    height: 242px;
 }
 .column img {
-  max-width: 100%;
+    border: 1px solid black;
 }
 </style>

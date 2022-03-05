@@ -3,7 +3,11 @@
   <div class="container">
     <div v-for="p of puzzles" :key="p.id" class="col">
       <div class="">
-        <img @click="$emit('puzzle-changed', p.title)" :src="require(`../assets/${p.image}`)" alt="p.title" />
+        <img
+          @click="$emit('puzzle-changed', p.title)"
+          :src="require(`../assets/${p.image}`)"
+          alt="p.title"
+        />
       </div>
       <div>
         <h3>{{ p.title }}</h3>
@@ -19,9 +23,8 @@ export default {
   data() {
     return {
       puzzles: [
-        { id: 1, image: "mandala.jpg", title: "mandala" },
-        { id: 2, image: "cliff.jpg", title: "cliff" },
-        { id: 3, image: "stork.jpg", title: "stork" },
+        { id: 1, image: "cats.jpg", title: "cats" },
+        { id: 2, image: "stork.jpg", title: "stork" },
       ],
     };
   },
@@ -49,6 +52,5 @@ export default {
 
 .col img:hover {
   border: 2px goldenrod solid;
-
 }
 </style>
