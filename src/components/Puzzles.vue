@@ -1,16 +1,16 @@
 <template>
-  <h1>Choose the picture:</h1>
-  <div class="container">
-    <div v-for="p of puzzles" :key="p.id" class="col">
-      <div class="">
+  <div class="box">
+    <h1 class="title">Choose a picture:</h1>
+    <div class="container">
+      <div v-for="p of puzzles" :key="p.id" class="col">
         <img
           @click="$emit('puzzle-changed', p.title)"
           :src="require(`../assets/${p.image}`)"
           alt="p.title"
         />
-      </div>
-      <div>
-        <h3>{{ p.title }}</h3>
+        <div>
+          <h3>{{ p.title }}</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@ export default {
     return {
       puzzles: [
         { id: 1, image: "cats.jpg", title: "cats" },
-        { id: 2, image: "stork.jpg", title: "stork" },
+        { id: 2, image: "bird.jpg", title: "bird" },
       ],
     };
   },
@@ -32,6 +32,13 @@ export default {
 </script>
 
 <style>
+.box {
+  border: 1px solid black;
+  padding: 2rem;
+}
+.title {
+  text-align: center;
+}
 .container {
   display: flex;
   max-width: 95%;
