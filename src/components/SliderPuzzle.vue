@@ -112,6 +112,26 @@ export default {
         }
       }, 1000);
     },
+    shuffle(puzzle) {
+      let shuffled = [...puzzle].sort(
+        () => Math.random() - 0.5
+      )
+      if(this.areEqualArrays(puzzle,shuffled)){
+        this.shuffle(puzzle)
+      }
+      return shuffled
+    },
+    areEqualArrays(arr1, arr2){
+      if(arr1.length !== arr2.length){
+        return false
+      }
+      for(let i=0; i<arr1.length; i++){
+        if(arr1[i]!==arr2[i]){
+          return false
+        }
+      }
+      return true
+    },
     stop() {
       this.resetTime();
       clearInterval(this.timer);
