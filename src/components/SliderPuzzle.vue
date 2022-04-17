@@ -6,10 +6,12 @@
       <button @click="stop" id="quit-button">Quit</button>
     </div>
     <p class="timer">Elapsed Time: {{ elapsedTime }}</p>
-    
-    <div class="board">
 
-      <h3 class="win-message" v-if="isWinning">You win!!</h3>
+    <div class="board">
+      <div class="win-message" v-if="isWinning">
+        <h3>You won!!</h3>
+        <h5>Total game time: {{ gameTime }}</h5>
+      </div>
 
       <div class="board-overlay" v-if="isWinning"></div>
 
@@ -50,6 +52,7 @@ export default {
       default: "bird",
     },
   },
+  emits: ["updateLeaderboard"],
   data() {
     return {
       correctPuzzleArray,
@@ -58,6 +61,8 @@ export default {
       timer: undefined,
       startDateTime: new Date(),
       currentDateTime: new Date(),
+      isGameOn: false,
+      gameTime: "",
     };
   },
   computed: {
@@ -96,42 +101,46 @@ export default {
       }
     },
     start() {
+      if (this.isGameOn) {
+        return;
+      }
+      this.isGameOn = true;
       this.resetTime();
-      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray)
+      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray);
       this.indexesToSwap = [];
       this.timer = setInterval(() => {
         this.currentDateTime = new Date();
         if (this.isWinning) {
+          this.gameTime = this.elapsedTime;
           this.recordSpeedRecords();
           this.stop();
-          this.timer = undefined;
+          this.isGameOn = false;
         }
       }, 1000);
     },
     shuffle(puzzle) {
-      let shuffled = [...puzzle].sort(
-        () => Math.random() - 0.5
-      )
-      if(this.areEqualArrays(puzzle,shuffled)){
-        this.shuffle(puzzle)
+      let shuffled = [...puzzle].sort(() => Math.random() - 0.5);
+      if (this.areEqualArrays(puzzle, shuffled)) {
+        this.shuffle(puzzle);
       }
-      return shuffled
+      return shuffled;
     },
-    areEqualArrays(arr1, arr2){
-      if(arr1.length !== arr2.length){
-        return false
+    areEqualArrays(arr1, arr2) {
+      if (arr1.length !== arr2.length) {
+        return false;
       }
-      for(let i=0; i<arr1.length; i++){
-        if(arr1[i]!==arr2[i]){
-          return false
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+          return false;
         }
       }
-      return true
+      return true;
     },
     stop() {
       this.resetTime();
       clearInterval(this.timer);
-      this.timer = undefined
+      this.timer = undefined;
+      this.isGameOn = false;
     },
     resetTime() {
       this.startDateTime = new Date();
@@ -146,16 +155,17 @@ export default {
         .slice(0, 5);
       const stringifiedRecords = JSON.stringify(sortedRecords);
       localStorage.setItem("records", stringifiedRecords);
-    }
+      this.$emit("updateLeaderboard");
+    },
   },
   watch: {
     puzzle() {
-      this.indexesToSwap = []
-      this.resetTime()
-      this.stop()
-      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray)
-    }
-  }
+      this.indexesToSwap = [];
+      this.resetTime();
+      this.stop();
+      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray);
+    },
+  },
 };
 </script>
 
@@ -166,7 +176,7 @@ export default {
   align-items: center;
   gap: 0;
 }
-.buttons button{
+.buttons button {
   margin-left: 2em;
   padding: 0.25em;
   font-size: 1.15em;
@@ -192,9 +202,9 @@ export default {
   font-size: 1.5em;
   font-weight: 900;
   position: absolute;
-  top: 47%;
-  left: 42%;
-  color:azure;
+  top: 37%;
+  left: 30%;
+  color: azure;
   z-index: 1;
   margin: 0;
 }

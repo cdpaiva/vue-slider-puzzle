@@ -9,32 +9,24 @@
         <th>Time</th>
       </thead>
       <tbody>
-        <tr v-for="(r, idx) of records" :key="idx">
+        <tr v-for="(r, idx) in records" :key="idx">
           <td>{{ idx + 1 }}</td>
           <td>{{ r.elapsedTime }}</td>
         </tr>
       </tbody>
     </table>
 
-    <button @click="getRecords">Update Leaderboard</button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      records: [],
-    };
-  },
-  created() {
-    this.getRecords();
-  },
-  methods: {
-    getRecords() {
-      this.records = JSON.parse(localStorage.getItem("records")) || [];
-    },
-  },
+  props: {
+    records: {
+      type: Array,
+      required: true
+    }
+  }
 };
 </script>
 

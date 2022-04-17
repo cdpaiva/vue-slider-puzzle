@@ -1,8 +1,8 @@
 <template>
     <div class="content">
       <Puzzles @puzzle-changed="updatePuzzle" />
-      <SliderPuzzle :puzzle="selectedPuzzle" />
-      <Records />
+      <SliderPuzzle :puzzle="selectedPuzzle" @updateLeaderboard="updateLeaderboard"/>
+      <Records :records="records"/>
     </div>
 </template>
 
@@ -21,12 +21,16 @@ export default {
   data() {
     return {
       selectedPuzzle: "bird",
+      records: []
     };
   },
   methods: {
     updatePuzzle(puzzle) {
       this.selectedPuzzle = puzzle;
     },
+    updateLeaderboard() {
+      this.records = JSON.parse(localStorage.getItem("records")) || []
+    }
   },
 };
 </script>
