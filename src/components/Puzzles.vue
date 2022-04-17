@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "App",
+  name: "Puzzles",
   emits: ["puzzle-changed"],
   data() {
     return {
@@ -41,8 +41,9 @@ export default {
 }
 .container {
   display: flex;
+  flex-direction: column;
   max-width: 95%;
-  justify-content: center;
+  align-items: center;
   gap: 2%;
 }
 .col {

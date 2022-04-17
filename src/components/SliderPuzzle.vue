@@ -53,9 +53,7 @@ export default {
   data() {
     return {
       correctPuzzleArray,
-      shuffledPuzzleArray: [...correctPuzzleArray].sort(
-        () => Math.random() - 0.5
-      ),
+      shuffledPuzzleArray: this.shuffle(correctPuzzleArray),
       indexesToSwap: [],
       timer: undefined,
       startDateTime: new Date(),
@@ -99,9 +97,7 @@ export default {
     },
     start() {
       this.resetTime();
-      this.shuffledPuzzleArray = [...correctPuzzleArray].sort(
-        () => Math.random() - 0.5
-      );
+      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray)
       this.indexesToSwap = [];
       this.timer = setInterval(() => {
         this.currentDateTime = new Date();
@@ -157,9 +153,7 @@ export default {
       this.indexesToSwap = []
       this.resetTime()
       this.stop()
-      this.shuffledPuzzleArray = [...correctPuzzleArray].sort(
-        () => Math.random() - 0.5
-      );
+      this.shuffledPuzzleArray = this.shuffle(correctPuzzleArray)
     }
   }
 };
