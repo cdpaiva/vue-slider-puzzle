@@ -25,6 +25,24 @@ describe('SliderPuzzle.vue', () => {
     expect(secondImage).toBe(newFirstImage);
   })
 
+  it('does not allow swap if game has not started', () =>{
+    const wrapper = mount(SliderPuzzle)
+    wrapper.get('.column:nth-child(1) img').trigger('click');
+    expect(wrapper.vm.indexesToSwap.length).toBe(0);
+  })
+
+  it('can handle swap if a tile is double clicked', () => {
+    const wrapper = mount(SliderPuzzle)
+    wrapper.find('#start-button').trigger('click')
+    const [firstImage] = wrapper.vm.shuffledPuzzleArray
+    wrapper.get('.column:nth-child(1) img').trigger('click')
+    wrapper.get('.column:nth-child(1) img').trigger('click')
+    expect(wrapper.vm.indexesToSwap.length).toBe(0);
+    const [newFirstImage] = wrapper.vm.shuffledPuzzleArray;
+    expect(firstImage).toBe(newFirstImage)
+
+  })
+
   it('starts timer when start method is called', () => {
     const wrapper = mount(SliderPuzzle);
     wrapper.vm.start();
@@ -53,16 +71,81 @@ describe('SliderPuzzle.vue', () => {
     expect(localStorage.setItem).toHaveBeenCalledWith('records', stringifiedRecords);
   })
 
-  it('starts timer with Start button is clicked', () => {
+  it('can determine when a game is won', () => {
+    const wrapper = mount(SliderPuzzle, {
+      data() {
+        return {
+          correctPuzzleArray: ['image_part_001.jpg','image_part_002.jpg'],
+          shuffledPuzzleArray: ['image_part_001.jpg','image_part_002.jpg']
+        }
+      }
+    })
+    expect(wrapper.vm.isWinning).toBe(true)
+  })
+
+  it('uploads the leaderboard when game is won', () => {
+    const wrapper = mount(SliderPuzzle,{
+      computed: {
+        elapsedTime() {
+          return 1
+        },
+        isWinning() {
+          return true
+        }
+      }
+    })
+    wrapper.vm.recordSpeedRecords()
+    expect(wrapper.emitted()).toHaveProperty('updateLeaderboard')
+})
+
+  it('starts timer when Start button is clicked', () => {
     const wrapper = mount(SliderPuzzle);
     wrapper.get('#start-button').trigger('click');
     expect(setInterval).toHaveBeenCalledTimes(1);
   })
 
-  it('stops timer with Quit button is clicked', () => {
+  it('shuffles puzzle when Start button is clicked', () => {
+    const wrapper = mount(SliderPuzzle);
+    wrapper.get('#start-button').trigger('click');
+    expect(wrapper.vm.correctPuzzleArray).not.toBe(wrapper.vm.shuffledPuzzleArray)
+  })
+
+  it('does not allow players to restart multiple times', () => {
+    const wrapper = mount(SliderPuzzle)
+    wrapper.get('#start-button').trigger('click')
+    wrapper.get('#start-button').trigger('click')
+    wrapper.get('#start-button').trigger('click')
+    expect(setInterval).toHaveBeenCalledTimes(1);
+  })
+
+  it('stops timer when Quit button is clicked', () => {
     const wrapper = mount(SliderPuzzle);
     wrapper.get('#quit-button').trigger('click');
     expect(clearInterval).toHaveBeenCalledTimes(1);
+  })
+
+  it('can properly compare two equal arrays', () => {
+    const wrapper = mount(SliderPuzzle)
+    const arr1 = ['1','1','2','2']
+    const arr2 = ['1','1','2','2']
+
+    expect(wrapper.vm.areEqualArrays(arr1,arr2)).toBe(true)
+  })
+
+  it('can properly compare two different arrays of same size', () => {
+    const wrapper = mount(SliderPuzzle)
+    const arr1 = ['1','1','2','2']
+    const arr2 = ['1','2','3','4']
+
+    expect(wrapper.vm.areEqualArrays(arr1,arr2)).toBe(false)
+  })
+
+  it('can properly compare two arrays of different size', () => {
+    const wrapper = mount(SliderPuzzle)
+    const arr1 = ['1','1','2','2']
+    const arr2 = ['1','2']
+
+    expect(wrapper.vm.areEqualArrays(arr1,arr2)).toBe(false)
   })
 
   it('shows the elapsed time', () => {
