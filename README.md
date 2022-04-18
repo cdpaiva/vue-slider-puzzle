@@ -1,6 +1,6 @@
 # vue-slider-puzzle
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/daacd32a-9f63-4fb5-9fdc-a2289e9d3198/deploy-status)](https://app.netlify.com/sites/beautiful-flan-fc5c64/deploys)
+![Netlify Status](https://api.netlify.com/api/v1/badges/daacd32a-9f63-4fb5-9fdc-a2289e9d3198/deploy-status)
 
 You can see a live version of this app [in here](https://beautiful-flan-fc5c64.netlify.app/).
 It's layout is designed for desktop use only.
