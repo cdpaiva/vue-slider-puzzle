@@ -67,12 +67,7 @@ export default {
   },
   computed: {
     isWinning() {
-      for (let i = 0; i < this.correctPuzzleArray.length; i++) {
-        if (this.correctPuzzleArray[i] != this.shuffledPuzzleArray[i]) {
-          return false;
-        }
-      }
-      return true;
+      return this.areEqualArrays(this.correctPuzzleArray, this.shuffledPuzzleArray)
     },
     elapsedDiff() {
       const currentDateTime = moment(this.currentDateTime);
